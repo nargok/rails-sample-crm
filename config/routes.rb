@@ -11,4 +11,7 @@ Rails.application.routes.draw do
   root 'top#index'
  end
 
+ root 'errors#not_found'
+ get '*anything' => 'errors#not_found'
+
 end
