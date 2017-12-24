@@ -7,8 +7,7 @@ FactoryGirl.define do
 		given_name_kana 'タロウ'
 		password 'pw'
 		start_date { Date.yesterday }
-		# TODO 後でend_dateに修正する
-		end_data nil
+		end_date nil
 		suspended false
 	end
 end
