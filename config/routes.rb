@@ -10,7 +10,7 @@ Rails.application.routes.draw do
     end
   end
 
-  constraints host: config[:staff][:host] do
+  constraints host: config[:admin][:host] do
     namespace :admin, path: config[:admin][:path] do
       root 'top#index'
       get 'login' => 'sessions#new', as: :login
@@ -19,8 +19,10 @@ Rails.application.routes.draw do
     end
   end
 
-  namespace :customer do
-   root 'top#index'
+  constraints host: config[:customer][:host] do
+    namespace :customer, path: config[:customer][:path] do
+      root 'top#index'
+    end
   end
 
   root 'errors#not_found'
