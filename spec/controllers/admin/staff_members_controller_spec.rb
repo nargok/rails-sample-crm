@@ -30,9 +30,6 @@ RSpec.describe Admin::StaffMembersController do
     example 'hashed_passwordの値は書き換え不可' do
       params_hash.delete(:password)
       params_hash.merge!(hashed_password: 'x')
-
-#      puts(params_hash.hashed_password.class)
-      puts(staff_member.hashed_password.class)
       
       expect {
         patch :update, id: staff_member.id, staff_member: params_hash
