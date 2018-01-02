@@ -35,7 +35,5 @@ module Baukis
       g.view_specs false
     end
 
-    # 一度Strong parameterを無効にする
-    config.action_controller.permit_all_parameters = true
   end
 end

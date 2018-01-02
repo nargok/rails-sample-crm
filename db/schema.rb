@@ -37,7 +37,7 @@ ActiveRecord::Schema.define(version: 20171224141202) do
     t.boolean  "suspended",        default: false, null: false
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
+   end
 
   add_index "staff_members", ["email_for_index"], name: "index_staff_members_on_email_for_index", unique: true, using: :btree
   add_index "staff_members", ["family_name_kana", "given_name_kana"], name: "index_staff_members_on_family_name_kana_and_given_name_kana", using: :btree
