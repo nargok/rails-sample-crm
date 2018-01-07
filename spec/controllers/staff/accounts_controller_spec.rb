@@ -1,11 +1,15 @@
 # coding: utf-8
 require 'rails_helper'
 
+RSpec.describe Staff::AccountsController, 'ログイン前' do
+  it_behaves_like 'a proteced singular staff controller'
+end
+
 RSpec.describe Staff::AccountsController do
   describe '#updte' do
     let(:params_hash) { attributes_for(:staff_member) }
     let(:staff_member) { create(:staff_member) }
-    
+
     before do
       session[:staff_member_id] = staff_member.id
       session[:last_access_time] = 1.second.ago

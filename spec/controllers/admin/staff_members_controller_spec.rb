@@ -1,12 +1,16 @@
 # coding: utf-8
 require 'rails_helper'
 
+RSpec.describe Admin::StaffMembersController, 'ログイン前' do
+  it_behaves_like 'a proteced admin controller'
+end
+
 RSpec.describe Admin::StaffMembersController do
   let(:params_hash) { attributes_for(:staff_member) }
   let(:administrator) { create(:administrator) }
 
   before do
-    session[:administrator_id] = administrator.id 
+    session[:administrator_id] = administrator.id
   end
 
   describe '#create' do
