@@ -20,6 +20,7 @@ class Admin::SessionsController < Admin::Base
 			render action: :new
 		elsif Admin::Authenticator.new(admin).authenticate(@form.password)
 			session[:administator_id] = admin.id
+			session[:last_access_time] = Time.current
 			flash.notice = 'ログインしました'
 			redirect_to :admin_root
 		else
