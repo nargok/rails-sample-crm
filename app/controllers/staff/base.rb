@@ -1,5 +1,7 @@
 class Staff::Base < ApplicationController
-	before_action [:authorize, :check_account, :check_timeout]
+	before_action :authorize
+	before_action :check_account
+	before_action :check_timeout
 
 	private
 	def current_staff_member

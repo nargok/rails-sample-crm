@@ -1,5 +1,0 @@
-require 'rails_hepler'
-
-RSpec.describe Admin::StaffMemberController do
-  let(:params_hash) { attributes_for(:staff_member) }
-end
