@@ -10,4 +10,10 @@ class StaffMember < ActiveRecord::Base
 			self.hashed_password = nil
 		end
 	end
+
+	# 強制ログアウトの判定のため、職員アカウントの有効/無効を判定する
+	def active?
+		!suspended? && start_date <= Date.today &&
+			(end_date.nil? || end_date > Date.today)
+	end
 end
