@@ -1,12 +1,13 @@
 # coding: utf-8
 class Admin::StaffMembersController < Admin::Base
+
   def index
     @staff_members = StaffMember.order(:family_name_kana, :given_name_kana)
   end
 
   def show
     staff_member = StaffMember.find(params[:id])
-    redirect_to [ :edit, :admin, staff_member] 
+    redirect_to [ :edit, :admin, staff_member]
   end
 
   def new
@@ -46,6 +47,7 @@ class Admin::StaffMembersController < Admin::Base
   end
 
   private
+
   def staff_member_params
     params.require(:staff_member).permit(
       :email, :password, :family_name, :given_name,
