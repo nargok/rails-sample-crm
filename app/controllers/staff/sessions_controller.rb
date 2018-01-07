@@ -1,4 +1,6 @@
 class Staff::SessionsController < Staff::Base
+	skip_before_action :authorize
+
 	def new
 		if current_staff_member
 			redirect_to :staff_root
@@ -20,7 +22,7 @@ class Staff::SessionsController < Staff::Base
 			session[:staff_member_id] = staff_member.id
 			flash.notice = 'ログインしました。'
 			redirect_to :staff_root
-		else	
+		else
 			flash.now[:alert] = 'メールアドレスまたはパスワードが正しくありません。'
 			render action: 'new'
 		end
