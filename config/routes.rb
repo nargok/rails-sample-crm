@@ -15,7 +15,14 @@ Rails.application.routes.draw do
       root 'top#index'
       get 'login' => 'sessions#new', as: :login
       resource :session, only: [ :create, :destroy ]
-      resources :staff_members
+
+      # 特定の職員のログイン・ログアウト履歴を確認する
+      resources :staff_members do
+        resources :staff_events, only: [:index]
+      end
+
+      # すべての職員のログイン・ログアウト履歴を閲覧する
+      resources :staff_events, only: [:index]
     end
   end
 

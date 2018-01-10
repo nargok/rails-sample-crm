@@ -5,7 +5,7 @@
 	<div class="links">
 		<%= link_to '新規登録', :new_admin_staff_member %>
 	</div>
-	
+
 	<table class="listing">
 		<tr>
 			<th>氏名</th>
@@ -28,6 +28,7 @@
 				</td>
 				<td class="action">
 					<%= link_to '編集', [ :edit, :admin, m ] %> |
+					<%= link_to 'Events', [ :admin,  m, :staff_events ] %> |
 					<%= link_to '削除', [ :admin, m ], method: :delete,
 						data: { confirm: '本当に削除しますか？' } %>
 				</td>
