@@ -13,9 +13,11 @@ class StaffMember < ActiveRecord::Base
 	end
 
 	KATAKANA_REGEXP = /\A[\p{katakana}\u{30fc}]+\z/
+	HUMAN_NAME_REGEXP = /\A[\p{han}\p{hiragana}\p{katakana}\u{30fc}\p{alpha}]+\z/
 
 	validates :email, presence: true, email: { allow_blank: true }
-	validates :family_name, :given_name, presence: true
+	validates :family_name, :given_name, presence: true,
+	 format: { with: HUMAN_NAME_REGEXP }
 	validates :family_name_kana, :given_name_kana, presence: true,
 	 format: { with: KATAKANA_REGEXP, allow_blank: true } # allow_blank : 空白の場合はvalidationしない
 	# 開始日は2000/1/1以降, 今日から1年後の日付より前
