@@ -21,8 +21,9 @@
         <th>種別</th>
         <th>日時</th>
       </tr>
-      <!-- @eventsのレコード数だけ、部分テンプレートを埋め込む -->
-      <%= render partial: 'event', collection: @events %>
+      <% @events.each do |event| %>
+        <%= StaffEventPresenter.new(event, self).table_row %>
+      <% end %>
       <% if @events.empty? %>
         <tr>
           <%= content_tag(:td, '記録がありません',
