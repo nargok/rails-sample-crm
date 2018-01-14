@@ -11,7 +11,6 @@ class Admin::StaffEventsController < Admin::Base
       @events = StaffEvent
     end
     # クエリ発行のための検索条件を追加している
-    @evetns = @events.order(occured_at: :desc)
-      .includes(:member).page(params[:page])
-  end
+      @events = @events.order(occured_at: :desc).includes(:member).page(params[:page])
+    end
 end

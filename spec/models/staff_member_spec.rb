@@ -15,4 +15,54 @@ RSpec.describe StaffMember, :type => :model do
 			expect(member.hashed_password).to be_nil
 		end
 	end
+
+	describe '値の正規化' do
+		example 'email前後の空白を除去' do
+			member = create(:staff_member, email: ' test@example.com ')
+			expect(member.email).to eq("test@example.com")
+		end
+
+		example 'emailに含まれる全角英数字記号を半角に変換' do
+			member = create(:staff_member, email: 'ｔｅｓｔ@example.com')
+			expect(member.email).to eq("test@example.com")
+		end
+
+		example 'email全言お全角スペースを除去' do
+			member = create(:staff_member, email: '　test@example.com　')
+			expect(member.email).to eq("test@example.com")
+		end
+
+		example 'family_name_kanaに含まれるひらがなをカタカナに変換' do
+			member = create(:staff_member, family_name_kana: 'あらい')
+			expect(member.family_name_kana).to eq("アライ")
+		end
+
+		example 'given_name_kanaに含まれる半角カナを全角カナに変換' do
+			member = create(:staff_member, given_name_kana: 'ﾀｹﾙ')
+			expect(member.given_name_kana).to eq("タケル")
+		end
+	end
+
+	describe 'バリデーション' do
+		example '@を2個含むemailは無効' do
+			member = build(:staff_member, email: 'test@@example.com')
+			expect(member).not_to be_valid
+		end
+
+		example '漢字を含むfamily_name_kanaは無効' do
+			member = build(:staff_member, family_name_kana: '新井')
+			expect(member).not_to be_valid
+		end
+
+		example '長音府を含むfamily_name_kanaは有効' do
+			member = build(:staff_member, family_name_kana: 'エリー')
+			expect(member).to be_valid
+		end
+
+		example '他の職員のメールアドレスと重複したemailは無効' do
+			member1 = create(:staff_member)
+			member2 = build(:staff_member, email: member1.email)
+			expect(member2).not_to be_valid
+		end
+	end
 end
