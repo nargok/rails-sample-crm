@@ -46,6 +46,7 @@ gem 'foreigner', '~> 1.6.1'  # 外部キーを指定するGem
 gem 'kaminari', '~> 0.15.1'
 gem 'date_validator', '~> 0.7.0' # 日付のvalidation
 gem 'email_validator', '~> 1.4.0' # メールアドレスのvalidation
+gem 'jquery-ui-rails', '~> 4.2.1'
 gem 'quiet_assets', '~> 1.0.2', group: :development # assetsにアクセスしたログを抑制するGem
 
 group :test do
