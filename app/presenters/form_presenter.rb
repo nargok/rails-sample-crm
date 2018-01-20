@@ -21,6 +21,7 @@ class FormPresenter
     markup(:div, class: 'input-block') do |m|
       m << decorated_label(name, label_text, options)
       m << text_field(name, options)
+      m << error_messges_for(name)
     end
   end
 
@@ -28,6 +29,7 @@ class FormPresenter
     markup(:div, class: 'input-block') do |m|
       m << decorated_label(name, label_text, options)
       m << password_field(name, options)
+      m << error_messges_for(name)
     end
   end
 
@@ -35,11 +37,22 @@ class FormPresenter
     markup(:div, class: 'input-block') do |m|
       m << decorated_label(name, label_text, options)
       m << text_field(name, options)
+      m << error_messges_for(name)
+    end
+  end
+
+  def error_messges_for(name)
+    markup do |m|
+      object.errors.full_messages_for(name).each do |message|
+        m.div(class: 'error-message') do
+          m.text　<< message
+        end
+      end
     end
   end
 
   private
-  def decorated_label(namem label_text, options = {})
+  def decorated_label(name, label_text, options = {})
     label(name, label_text, class: options[:required] ? 'required' : nil)
   end
 end
