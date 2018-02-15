@@ -29,7 +29,7 @@ class FormPresenter
     markup(:div, class: 'input-block') do |m|
       m << decorated_label(name, label_text, options)
       m << password_field(name, options)
-      m << error_messges_for(name)
+      m << error_messages_for(name)
     end
   end
 
@@ -43,7 +43,7 @@ class FormPresenter
         options[:class] = 'datepicker'
       end
       m << text_field(name, options)
-      m << error_messges_for(name)
+      m << error_messages_for(name)
     end
   end
 
