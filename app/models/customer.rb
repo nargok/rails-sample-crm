@@ -6,7 +6,7 @@ class Customer < ActiveRecord::Base
     self.email_for_index = email.downcase if email
   end
 
-  validates :gender, inclusion: { in: %w(male, female), allow_blank: true }
+  validates :gender, inclusion: { in: %w(male female), allow_blank: true }
   validates :birthday, date: {
     after: Date.new(1900, 1, 1),
     before: -> (obj) { Date.today },

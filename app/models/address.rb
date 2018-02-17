@@ -1,4 +1,5 @@
 class Address < ActiveRecord::Base
+  include StringNormalizer
   belongs_to :customer
 
   before_validation do
@@ -22,5 +23,5 @@ class Address < ActiveRecord::Base
   )
 
   validates :postal_code, format: { with: /\A\d{7}\z/, allow_blank: true }
-  validates :prefecturem inclusion: { in: PREFECTURE_NAMES, allow_blank: true }
+  validates :prefecture, inclusion: { in: PREFECTURE_NAMES, allow_blank: true }
 end
