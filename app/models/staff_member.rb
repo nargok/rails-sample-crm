@@ -1,15 +1,10 @@
 class StaffMember < ActiveRecord::Base
-	include StringNormalizer
+	include EmailHolder
 	include PersonalNameHolder
 
 	has_many :events, class_name: 'StaffEvent', dependent: :destroy
 
-	before_validation do
-		self.email = normalize_as_email(email)
-		self.email_for_index = email.downcase if email
-	end
-
-	validates :email, presence: true, email: { allow_blank: true }
+	# validates :email, presence: true, email: { allow_blank: true }
 	# 開始日は2000/1/1以降, 今日から1年後の日付より前
 	validates :start_date, presence: true, date: {
 		after_or_equal_to: Date.new(2000, 1,1),
@@ -27,12 +22,6 @@ class StaffMember < ActiveRecord::Base
 	# email属性にエラーを付与する(エラーが発生している属性の入れ替えをする)
 	# 画面にエラーが発生していることを表示するため。
 	validates :email_for_index, uniqueness: { allow_blank: true }
-	after_validation do
-		if errors.include?(:email_for_index)
-			errors.add(:email, :taken) # 第1引数 : エラーを付与する属性、第2引数 : メッセージ
-			errors.delete(:email_for_index)
-		end
-	end
 
 	def password=(raw_password)
 		if raw_password.kind_of?(String)
