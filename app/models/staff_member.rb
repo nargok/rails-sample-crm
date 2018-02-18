@@ -1,6 +1,7 @@
 class StaffMember < ActiveRecord::Base
 	include EmailHolder
 	include PersonalNameHolder
+	include PasswordHolder
 
 	has_many :events, class_name: 'StaffEvent', dependent: :destroy
 
@@ -17,19 +18,6 @@ class StaffMember < ActiveRecord::Base
 		before: -> (obj) { 1.year.from_now.to_date },
 		allow_blank: true
 	}
-
-	# emailの重複チェック、小文字変換後のemail_for_indexで重複チェックし、
-	# email属性にエラーを付与する(エラーが発生している属性の入れ替えをする)
-	# 画面にエラーが発生していることを表示するため。
-	validates :email_for_index, uniqueness: { allow_blank: true }
-
-	def password=(raw_password)
-		if raw_password.kind_of?(String)
-			self.hashed_password = BCrypt::Password.create(raw_password)
-		elsif raw_password.nil?
-			self.hashed_password = nil
-		end
-	end
 
 	# 強制ログアウトの判定のため、職員アカウントの有効/無効を判定する
 	def active?
