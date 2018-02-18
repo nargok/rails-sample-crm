@@ -1,5 +1,6 @@
 class Staff::CustomersController < Staff::Base
   def index
+    @search_form = Staff::CustomerSearchForm.new
     @customers = Customer.order(:family_name_kana, :given_name_kana).page(params[:page])
   end
 
@@ -43,6 +44,6 @@ class Staff::CustomersController < Staff::Base
     customer = Customer.find(params[:id])
     customer.destroy!
     flash.notice = '顧客アカウントを削除しました。'
-    redirect_to :staff_customer  
+    redirect_to :staff_customer
   end
 end
