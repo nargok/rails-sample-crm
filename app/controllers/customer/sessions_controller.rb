@@ -16,7 +16,17 @@ class Customer::SessionsController < Customer::Base
       customer = Customer.find_by(email_for_index: @form.email.downcase)
     end
     if Customer::Authenticator.new(customer).authenticate(@form.password)
-      session[:customer_id] = customer.id
+      if @form.remember_me?
+        # クッキーの有効期限を1週間にする
+        cookies.permanent.signed[:customer_id] = {
+            value: customer.id,
+            expires: 1.week.from_now
+        }
+      else
+        # 次回から自動でログインするをチェックせずにログインしたため、クッキーを消す
+        cookies.delete(:customer_id)
+        session[:customer_id] = customer.id
+      end
       flash.notice = 'ログインしました'
       redirect_to :customer_root
     else
@@ -26,6 +36,7 @@ class Customer::SessionsController < Customer::Base
   end
 
   def destroy
+    cookies.delete(:customer_id)
     session.delete(:customer_id)
     flash.notice = 'ログアウトしました。'
     redirect_to :customer_root
