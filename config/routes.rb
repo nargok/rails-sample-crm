@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   config = Rails.application.config.baukis
 
-  # 一時的にhost設定をoff
+  # TODO hostの設定方法を調べる
   # constraints host: config[:staff][:host] do
     namespace :staff, path: config[:staff][:path] do
       root 'top#index'
@@ -13,7 +13,7 @@ Rails.application.routes.draw do
     end
   # end
 
-  # 一時的にhost設定をoff
+  # TODO hostの設定方法を調べる
   # constraints host: config[:admin][:host] do
     namespace :admin, path: config[:admin][:path] do
       root 'top#index'
@@ -30,7 +30,7 @@ Rails.application.routes.draw do
     end
   # end
 
-  # 一時的にhost設定をoff
+  # TODO hostの設定方法を調べる
   # constraints host: config[:customer][:host] do
     namespace :customer, path: config[:customer][:path] do
       root 'top#index'
