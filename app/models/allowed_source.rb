@@ -19,4 +19,19 @@ class AllowedSource < ActiveRecord::Base
       self.octet4 = octets[3]
     end
   end
+
+  class << self
+    def include?(namespace, ip_address)
+      # IPアドレス機能制限を無効にしている場合は必ずtrueを返す
+      return true if !Rails.application.config.baukis[:restrict_ip_addresses]
+
+      octets = ip_address.split(".")
+      condition = %Q{
+        octet1 = ? AND octet2 = ? AND octet3 = ?
+        AND ((octet4 = ? AND wildcard = ?) OR wildcard = ?)}
+      # *octetsは配列の展開 → octets[0], octets[1], octets[2], octets[3]となる
+      opts = [ condition, *octets, false, true ]
+      where(namespace: namespace).where(opts).exists?
+    end
+  end
 end
