@@ -19,3 +19,4 @@ public/assets/*
 memo.md
 
 .idea/*
+vendor/bundle/*
