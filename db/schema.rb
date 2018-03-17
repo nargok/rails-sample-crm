@@ -40,7 +40,7 @@ ActiveRecord::Schema.define(version: 20180313143441) do
     t.string   "hashed_password"
     t.boolean  "suspended",       default: false, null: false
     t.datetime "created_at"
-    t.datetime "updatted_at"
+    t.datetime "updated_at"
   end
 
   add_index "administrators", ["email_for_index"], name: "index_administrators_on_email_for_index", unique: true, using: :btree
