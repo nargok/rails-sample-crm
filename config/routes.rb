@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
   config = Rails.application.config.baukis
 
-  constraints host: config[:staff][:host] do
+  # 一時的にhost設定をoff
+  # constraints host: config[:staff][:host] do
     namespace :staff, path: config[:staff][:path] do
       root 'top#index'
       get 'login' => 'sessions#new', as: :login
@@ -10,9 +11,10 @@ Rails.application.routes.draw do
       resource :password, only: [ :show, :edit, :update ]
       resources :customers
     end
-  end
+  # end
 
-  constraints host: config[:admin][:host] do
+  # 一時的にhost設定をoff
+  # constraints host: config[:admin][:host] do
     namespace :admin, path: config[:admin][:path] do
       root 'top#index'
       get 'login' => 'sessions#new', as: :login
@@ -26,15 +28,16 @@ Rails.application.routes.draw do
       # すべての職員のログイン・ログアウト履歴を閲覧する
       resources :staff_events, only: [:index]
     end
-  end
+  # end
 
-  constraints host: config[:customer][:host] do
+  # 一時的にhost設定をoff
+  # constraints host: config[:customer][:host] do
     namespace :customer, path: config[:customer][:path] do
       root 'top#index'
       get 'login' => 'sessions#new', as: :login
       resource :session, only: [ :create, :destroy ]
     end
-  end
+  # end
 
   root 'errors#not_found'
   get '*anything' => 'errors#not_found'
