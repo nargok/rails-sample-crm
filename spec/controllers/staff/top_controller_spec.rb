@@ -3,13 +3,40 @@ require 'rails_helper'
 RSpec.describe Staff::TopController, 'ログイン前' do
   let(:staff_member) { create(:staff_member) }
 
+  describe 'IPアドレスによるアクセス制限' do
+
+    before do
+      # テスト実施前にIPアドレス制限処理をonにする
+      Rails.application.config.baukis[:restrict_ip_addresses] = true
+    end
+
+    # 前提知識：testモードでは常にrequest.ipは0.0.0.0を返す
+    example '許可' do
+      AllowedSource.create!(namespace: 'staff', ip_address: '0.0.0.0')
+      get :index
+      expect(response).to render_template('staff/top/index')
+    end
+
+    example '拒否' do
+      AllowedSource.create!(namespace: 'staff', ip_address: '192.168.0.*')
+
+      get :index
+      expect(response).to render_template('errors/forbidden')
+    end
+
+  end
+end
+
+RSpec.describe Staff::TopController, 'ログイン後' do
+    let(:staff_member) { create(:staff_member) }
+
   before do
     session[:staff_member_id] = staff_member.id
     session[:last_access_time] = 1.second.ago
   end
 
   describe '#index' do
-    example '通常はstaff/top/indexを表示' do
+    example 'ログイン後はstaff/top/dashboardを表示' do
       get :index
       expect(response).to render_template('staff/top/dashboard')
     end
