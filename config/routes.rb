@@ -27,6 +27,11 @@ Rails.application.routes.draw do
 
       # すべての職員のログイン・ログアウト履歴を閲覧する
       resources :staff_events, only: [:index]
+
+      # 許可IPアドレスのメンテナンス
+      resources :allowed_sources, only: [ :index, :create ] do
+        delete :delete, on: :collection
+      end
     end
   # end
 
