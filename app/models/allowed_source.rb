@@ -1,11 +1,40 @@
 class AllowedSource < ActiveRecord::Base
   attr_accessor :last_octet
+
+  before_validation do
+    # last_octetの値を代入する
+    if last_octet
+      self.last_octet.strip!
+      if last_octet == '*'
+        self.octet4 = 0
+        self.wildcard = true
+      else
+        self.octet4 = last_octet
+      end
+    end
+  end
   validates :octet1, :octet2, :octet3, :octet4, presence: true,
             numericality: { only_integer: true, allow_bank: true },
             inclusion: { in: 0..255, allow_blank: true }
+
   # octed1 ~ octet4までの組み合わせが一意であること
   validates :octet4,
             uniqueness: { scope: [ :octet1, :octet2, :octet3 ], allow_blank: true }
+
+  # last_octetに入力できる値を文字列の配列で定義
+  validates :last_octet,
+            inclusion: { in: (0..255).to_a.map(&:to_s) + ['*'], allow_blank: true }
+
+    after_validation do
+    # 許可IPアドレスフォーム上のエラー表示のため
+    # octet4のエラーがあれば、エラーオブジェクトにlast_octetキーを持たせて登録しなおす
+    # last_octetのエラーとして扱う
+    if last_octet
+      errors[:octet4].each do |message|
+        errors.add(:last_octet, message)
+      end
+    end
+  end
 
   # ipアドレスを文字列でも指定できるようにする
   def ip_address=(ip_address)
@@ -37,13 +66,5 @@ class AllowedSource < ActiveRecord::Base
       # *octetsは配列の展開 → octets[0], octets[1], octets[2], octets[3]となる
       [ condition, *octets, false, true ]
     end
-
-      # octets = ip_address.split(".")
-      # condition = %Q{
-      #   octet1 = ? AND octet2 = ? AND octet3 = ?
-      #   AND ((octet4 = ? AND wildcard = ?) OR wildcard = ?)}
-      # *octetsは配列の展開 → octets[0], octets[1], octets[2], octets[3]となる
-      # opts = [ condition, *octets, false, true ]
-      # where(namespace: namespace).where(opts).exists?
   end
 end
