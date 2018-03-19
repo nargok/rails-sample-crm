@@ -1,6 +1,5 @@
 class AllowedSource < ActiveRecord::Base
-  attr_accessor :last_octet
-
+  attr_accessor :last_octet, :_destroy
   before_validation do
     # last_octetの値を代入する
     if last_octet

@@ -17,6 +17,14 @@ class Admin::AllowedSourcesController < Admin::Base
     end
   end
 
+  def delete
+    # AllowedSourcesDeleterのdeleteメソッドがインスタンスメソッドなので、newしてから実行する
+    if Admin::AllowedSourcesDeleter.new.delete(params[:form])
+      flash.notice = '許可IPアドレスを削除しました。'
+    end
+    redirect_to action: 'index'
+  end
+
   private
   def allowed_source_params
     params.require(:allowed_source).permit(:octet1, :octet2, :octet3, :last_octet)
